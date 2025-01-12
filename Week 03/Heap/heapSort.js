@@ -3,7 +3,7 @@ const swap = (array, index1, index2) => {
 };
 
 const heapify = (array, index, length = array.length) => {
-    let largest = index,
+        let largest = index,
         left = index * 2 + 1,
         right = index * 2 + 2;
 

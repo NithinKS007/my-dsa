@@ -2,9 +2,7 @@ const binarySearch = (arr, target, leftIndex = 0, rightIndex = arr.length - 1) =
     if (leftIndex > rightIndex) {
         return -1;
     }
-
     const mid = Math.floor((leftIndex + rightIndex) / 2);
-
     if (arr[mid] === target) {
         return mid;
     } else if (target < arr[mid]) {

@@ -1,3 +1,5 @@
+const LinkedList = require("../../Week 01/LinkedList/linkedList")
+
 class LinkedListStack {
   constructor() {
     this.list = new LinkedList();

@@ -1,3 +1,5 @@
+const LinkedList = require("../../Week 01/LinkedList/linkedList")
+
 class LinkedListQueue {
   constructor() {
     this.list = new LinkedList();

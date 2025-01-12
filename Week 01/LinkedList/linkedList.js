@@ -270,5 +270,7 @@ class LinkedList {
     this.head = prev;
   }
 }
+module.exports = LinkedList;
 
-const list = new LinkedList();
+
+

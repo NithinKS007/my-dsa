@@ -1,35 +1,23 @@
-function mergeSort(array) {
-    if (array.length <= 1) {
-        return array;
+function mergeSort(arr){
+    if(arr.length<2){
+      return arr
     }
+    const mid=Math.floor(arr.length/2)
+    let left=arr.slice(0,mid)
+    let right=arr.slice(mid)
+    return merge(mergeSort(left),mergeSort(right))
 
-    const middle = Math.floor(array.length / 2);
-    const left = array.slice(0, middle); 
-    const right = array.slice(middle); 
-
-    return merge(
-        mergeSort(left), 
-        mergeSort(right) 
-    );
-}
-function merge(left, right) {
-    let resultArray = [],
-        leftIndex = 0,
-        rightIndex = 0;
-
-    while (leftIndex < left.length && rightIndex < right.length) {
-        if (left[leftIndex] < right[rightIndex]) {
-            resultArray.push(left[leftIndex]);
-            leftIndex++; 
-        } else {
-            resultArray.push(right[rightIndex]);
-            rightIndex++; 
+    function merge(leftArr,rightArr){
+      let sortedArr=[]
+      while(leftArr.length && rightArr.length){
+        if(leftArr[0]< rightArr[0]){
+          sortedArr.push(leftArr.shift())
+        }else{
+          sortedArr.push(rightArr.shift())
         }
+      }
+      return [...sortedArr,...leftArr,...rightArr]
     }
-
-    return resultArray
-        .concat(left.slice(leftIndex))
-        .concat(right.slice(rightIndex));
-}
-
-console.log("Sorted array : ",mergeSort([8, 20, -2, 4, -6]));
+    
+  }
+  console.log('answer 3',mergeSort([3,1,-5,-33,85,6,-8,]))

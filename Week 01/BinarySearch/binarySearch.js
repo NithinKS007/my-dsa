@@ -1,9 +1,7 @@
 const binarySearch = (arr, t) => {
     arr.sort((a, b) => a - b);  
-
     let leftIndex = 0;
     let rightIndex = arr.length - 1;
-
     while (leftIndex <= rightIndex) {
         let middleIndex = Math.floor((leftIndex + rightIndex) / 2); 
 
