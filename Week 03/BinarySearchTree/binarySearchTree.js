@@ -286,6 +286,48 @@ class BinarySearchTree {
     }
     return this.countLeafNodes(root.left) + this.countLeafNodes(root.right);
   }
+  countLeafNodesWithOutRecursion() {
+    if (this.root === null) return 0;
+
+    let queue = [this.root];
+    let leafCount = 0;
+
+    while (queue.length > 0) {
+      const node = queue.shift();
+
+      if (node.left === null && node.right === null) {
+        leafCount++;
+      }
+      if (node.left) {
+        queue.push(node.left);
+      }
+
+      if (node.right) {
+        queue.push(node.right);
+      }
+    }
+
+    return leafCount;
+  }
+
+  findMaxWithOutRecursion() {
+    let current = this.root;
+
+    while (current !== null && current.right !== null) {
+      current = current.right;
+    }
+
+    return current.value;
+  }
+  findMinWithOutRecursion() {
+    let current = this.root;
+
+    while (current !== null && current.left !== null) {
+      current = current.left;
+    }
+
+    return current.value;
+  }
 }
 
 const bst = new BinarySearchTree();

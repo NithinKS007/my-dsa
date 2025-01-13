@@ -269,8 +269,30 @@ class LinkedList {
     this.tail = this.head;
     this.head = prev;
   }
+  mergeTwoSortedLinkedList(list1, list2) {
+    let p1 = list1.head;
+    let p2 = list2.head;
+    let mergedList = new LinkedList();
+
+    while (p1 !== null || p2 !== null) {
+      if (p1 === null) {
+        mergedList.append(p2.value);
+        p2 = p2.next;
+      } else if (p2 === null) {
+        mergedList.append(p1.value);
+        p1 = p1.next;
+      } else {
+        if (p1.value < p2.value) {
+          mergedList.append(p1.value);
+          p1 = p1.next;
+        } else {
+          mergedList.append(p2.value);
+          p2 = p2.next;
+        }
+      }
+    }
+
+    return mergedList;
+  }
 }
 module.exports = LinkedList;
-
-
-

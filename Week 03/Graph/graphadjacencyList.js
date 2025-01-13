@@ -8,6 +8,17 @@ class Graph {
     }
   }
 
+ 
+  addEdge(vertex1, vertex2) {
+    if (!this.adjacencyList[vertex1]) {
+      this.addVertex(vertex1);
+    }
+    if (!this.adjacencyList[vertex2]) {
+      this.addVertex(vertex2);
+    }
+    this.adjacencyList[vertex1].add(vertex2);
+    this.adjacencyList[vertex2].add(vertex1);
+  }
   removeVertex(vertex) {
     if (!this.adjacencyList[vertex]) {
       return;
@@ -18,16 +29,6 @@ class Graph {
     }
 
     delete this.adjacencyList[vertex];
-  }
-  addEdge(vertex1, vertex2) {
-    if (!this.adjacencyList[vertex1]) {
-      this.addVertex(vertex1);
-    }
-    if (!this.adjacencyList[vertex2]) {
-      this.addVertex(vertex2);
-    }
-    this.adjacencyList[vertex1].add(vertex2);
-    this.adjacencyList[vertex2].add(vertex1);
   }
   removeEdge(vertex1, vertex2) {
     if (this.adjacencyList[vertex1] && this.adjacencyList[vertex2]) {
@@ -105,40 +106,39 @@ class Graph {
     return result;
   }
 
-  // checkTwoNodesareConnected(vertex1, vertex2) {
-    
-  //   return this.hasEdge(vertex1, vertex2) || this.bfs(vertex1).includes(vertex2);
-  // }
+  checkTwoNodesareConnected(vertex1, vertex2) {
+    return this.hasEdge(vertex1, vertex2) || this.bfs(vertex1).includes(vertex2);
+  }
 
-  // shortestPath(startNode, endNode) {
-  //   const queue = [[startNode]];
-  //   const visited = new Set();
+  shortestPath(startNode, endNode) {
+    const queue = [[startNode]];
+    const visited = new Set();
   
-  //   if (!this.adjacencyList[startNode] || !this.adjacencyList[endNode]) {
-  //     console.log("One or both of the nodes do not exist in the graph.");
-  //     return [];
-  //   }
+    if (!this.adjacencyList[startNode] || !this.adjacencyList[endNode]) {
+      console.log("One or both of the nodes do not exist in the graph.");
+      return [];
+    }
   
-  //   while (queue.length) {
-  //     const path = queue.shift(); 
-  //     const vertex = path[path.length - 1];
+    while (queue.length) {
+      const path = queue.shift(); 
+      const vertex = path[path.length - 1];
   
-  //     if (vertex === endNode) {
-  //       return path; 
-  //     }
+      if (vertex === endNode) {
+        return path; 
+      }
   
-  //     if (!visited.has(vertex)) {
-  //       visited.add(vertex); 
+      if (!visited.has(vertex)) {
+        visited.add(vertex); 
   
-  //       for (const neighbor of this.adjacencyList[vertex]) {
-  //         const newPath = [...path, neighbor]; 
-  //         queue.push(newPath); 
-  //       }
-  //     }
-  //   }
+        for (const neighbor of this.adjacencyList[vertex]) {
+          const newPath = [...path, neighbor]; 
+          queue.push(newPath); 
+        }
+      }
+    }
   
-  //   return [];
-  // }
+    return [];
+  }
   
   
 }
@@ -159,3 +159,12 @@ graph.display()
 
 console.log(graph.dfs("A"));
 console.log(graph.bfs("A"));
+
+// this.adjacencyList = {
+//   A: ['B', 'C'],
+//   B: ['A', 'D', 'E'],
+//   C: ['A', 'F'],
+//   D: ['B'],
+//   E: ['B', 'F'],
+//   F: ['C', 'E']
+// };
