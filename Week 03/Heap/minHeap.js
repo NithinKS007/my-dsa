@@ -79,10 +79,13 @@ class MinHeap {
      }
  }
 const minHeap = new MinHeap();
+minHeap.insert(1)
+minHeap.insert(8)
+minHeap.insert(7);
+minHeap.insert(4);
 minHeap.insert(10);
-minHeap.insert(5);
-minHeap.insert(20);
 minHeap.display()
 
-console.log(minHeap.poll()); 
+console.log("poll",minHeap.poll()); 
 
+minHeap.display()

@@ -9,7 +9,6 @@ const selectionSort = (arr) => {
             }
         }
         if (indexOfMin !== i) {
-
             [arr[i], arr[indexOfMin]] = [arr[indexOfMin], arr[i]]
             
         }

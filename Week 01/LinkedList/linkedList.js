@@ -60,13 +60,14 @@ class LinkedList {
       return;
     }
     if (this.size <= 2) {
-      console.log("There is no middle to delete");
+      console.log("There is no middle");
       return;
     }
     let slowPointer = this.head;
     let fastPointer = this.head;
 
     while (fastPointer !== null && fastPointer.next !== null) {
+      console.log("slowPointer at:", slowPointer.value, "fastPointer at:", fastPointer.value);
       slowPointer = slowPointer.next;
       fastPointer = fastPointer.next.next;
     }

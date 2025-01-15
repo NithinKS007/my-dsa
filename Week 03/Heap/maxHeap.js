@@ -33,7 +33,7 @@ class MaxHeap {
 
     const maxValue = this.heap[0];
     this.heap[0] = this.heap[this.heap.length - 1];
-    this.heap.pop();
+    this.heap.pop(); // remove the last element
     this.bubbleDown(0);
     return maxValue;
   }

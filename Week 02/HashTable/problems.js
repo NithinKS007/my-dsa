@@ -108,7 +108,7 @@ topKFrequent = function (nums, k) {
 
  // Find the Intersection of Two Arrays
  function intersection(nums1, nums2) {
-  const map = new Map();
+  const map = new Map()
   const result = [];
   for (const num of nums1) {
       map.set(num, true);
