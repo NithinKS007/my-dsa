@@ -18,4 +18,4 @@ const merge = (leftArr, rightArr) => {
   }
   return [...sortedArr, ...leftArr, ...rightArr];
 };
-console.log("answer 3", mergeSort([3, 1, -5, -33, 85, 6, -8]));
+console.log("Sorted Array", mergeSort([3, 1, -5, -33, 85, 6, -8]));

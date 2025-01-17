@@ -13,7 +13,6 @@ const quickSort = (arr) => {
       right.push(arr[i]);
     }
   }
-
   return [...quickSort(left), pivot, ...quickSort(right)];
 };
 

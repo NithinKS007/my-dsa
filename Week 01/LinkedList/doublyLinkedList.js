@@ -45,7 +45,7 @@ class DoubleLinkedList {
     }
     this.size++;
   }
-  
+
   print() {
     if (this.isEmpty()) {
       console.log("The list is empty");
@@ -58,4 +58,39 @@ class DoubleLinkedList {
     }
   }
 
+  delete(value) {
+    if (this.isEmpty()) {
+      console.log("List is empty");
+      return;
+    }
+
+    if (this.head.value === value && this.size === 1) {
+      this.head = null;
+      this.tail = null;
+      this.size--;
+      return;
+    }
+
+    let current = this.head;
+    while (current !== null) {
+      if (current.value === value) {
+        if (current === this.head) {
+          this.head = current.next;
+          this.head.prev = null;
+        } else if (current === this.tail) {
+          this.tail = current.prev;
+          this.tail.next = null;
+        } else {
+          current.prev.next = current.next;
+          current.next.prev = current.prev;
+        }
+        this.size--;
+        return;
+      }
+      current = current.next;
+    }
+
+    console.log("Node with value", value, "not found.");
+  }
 }
+const list = new DoubleLinkedList();

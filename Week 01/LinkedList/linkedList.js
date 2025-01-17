@@ -67,7 +67,12 @@ class LinkedList {
     let fastPointer = this.head;
 
     while (fastPointer !== null && fastPointer.next !== null) {
-      console.log("slowPointer at:", slowPointer.value, "fastPointer at:", fastPointer.value);
+      console.log(
+        "slowPointer at:",
+        slowPointer.value,
+        "fastPointer at:",
+        fastPointer.value
+      );
       slowPointer = slowPointer.next;
       fastPointer = fastPointer.next.next;
     }
@@ -295,5 +300,115 @@ class LinkedList {
 
     return mergedList;
   }
+  removeFromFront() {
+    if (this.isEmpty()) {
+      console.log("List is empty");
+      return;
+    }
+    this.head = this.head.next;
+    if (this.head === null) {
+      this.tail = null;
+    }
+    this.size--;
+    console.log("Removed from front.");
+  }
+  removeFromEnd() {
+    if (this.isEmpty()) {
+      console.log("List is empty");
+      return;
+    }
+    if (this.size === 1) {
+      this.head = null;
+      this.tail = null;
+    } else {
+      let current = this.head;
+      while (current.next !== this.tail) {
+        current = current.next;
+      }
+      current.next = null;
+      this.tail = current;
+    }
+    this.size--;
+    console.log("Removed from end.");
+  }
+  insertAtIndex(value, index) {
+    if (index < 0 || index > this.size) {
+      console.log("Invalid index.");
+      return;
+    }
+    if (index === 0) {
+      this.prepend(value);
+      return;
+    }
+    if (index === this.size) {
+      this.append(value);
+      return;
+    }
+
+    let current = this.head;
+    let count = 0;
+    while (count < index - 1) {
+      current = current.next;
+      count++;
+    }
+
+    const newNode = new Node(value);
+    newNode.next = current.next;
+    current.next = newNode;
+
+    this.size++;
+    console.log(`Inserted ${value} at index ${index}`);
+  }
+  removeAtIndex(index) {
+    if (index < 0 || index >= this.size) {
+      console.log("Invalid index.");
+      return;
+    }
+
+    if (index === 0) {
+      this.head = this.head.next;
+      if (this.head === null) {
+        this.tail = null;
+      }
+      this.size--;
+      console.log("Removed from index 0");
+      return;
+    }
+
+    let current = this.head;
+    let count = 0;
+
+    while (count < index - 1) {
+      current = current.next;
+      count++;
+    }
+
+    current.next = current.next.next;
+    if (current.next === null) {
+      this.tail = current;
+    }
+    this.size--;
+    console.log(`Removed from index ${index}`);
+  }
+  detectCycle() {
+    if (this.isEmpty()) {
+      console.log("List is empty, no cycle.");
+      return false;
+    }
+
+    let slowPointer = this.head;
+    let fastPointer = this.head;
+
+    while (fastPointer !== null && fastPointer.next !== null) {
+      slowPointer = slowPointer.next;
+      fastPointer = fastPointer.next.next;
+
+      if (slowPointer === fastPointer) {
+        console.log("Cycle detected!");
+        return true;
+      }
+    }
+    console.log("No cycle detected.");
+    return false;
+  }
 }
-module.exports = LinkedList;
