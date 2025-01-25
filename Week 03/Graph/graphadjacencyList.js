@@ -1,6 +1,6 @@
 class Graph {
   constructor() {
-    this.adjacencyList = {}
+    this.adjacencyList = {};
   }
   addVertex(vertex) {
     if (!this.adjacencyList[vertex]) {
@@ -8,7 +8,6 @@ class Graph {
     }
   }
 
- 
   addEdge(vertex1, vertex2) {
     if (!this.adjacencyList[vertex1]) {
       this.addVertex(vertex1);
@@ -61,15 +60,12 @@ class Graph {
       const vertex = stack.pop();
 
       if (!visited.has(vertex)) {
-
         visited.add(vertex);
         result.push(vertex);
 
         for (const neighbor of this.adjacencyList[vertex]) {
-
           if (!visited.has(neighbor)) {
-          stack.push(neighbor);
-
+            stack.push(neighbor);
           }
         }
       }
@@ -78,7 +74,7 @@ class Graph {
     return result;
   }
 
-  bfs(startNode) { 
+  bfs(startNode) {
     const visited = new Set();
     const queue = [startNode];
     const result = [];
@@ -92,13 +88,12 @@ class Graph {
       const vertex = queue.shift();
 
       if (!visited.has(vertex)) {
-        visited.add(vertex);  
+        visited.add(vertex);
         result.push(vertex);
 
         for (const neighbor of this.adjacencyList[vertex]) {
           if (!visited.has(neighbor)) {
-          queue.push(neighbor);
-
+            queue.push(neighbor);
           }
         }
       }
@@ -107,40 +102,69 @@ class Graph {
   }
 
   checkTwoNodesareConnected(vertex1, vertex2) {
-    return this.hasEdge(vertex1, vertex2) || this.bfs(vertex1).includes(vertex2);
+    return (
+      this.hasEdge(vertex1, vertex2) || this.bfs(vertex1).includes(vertex2)
+    );
   }
 
   shortestPath(startNode, endNode) {
     const queue = [[startNode]];
     const visited = new Set();
-  
+
     if (!this.adjacencyList[startNode] || !this.adjacencyList[endNode]) {
       console.log("One or both of the nodes do not exist in the graph.");
       return [];
     }
-  
+
     while (queue.length) {
-      const path = queue.shift(); 
+      const path = queue.shift();
       const vertex = path[path.length - 1];
-  
+
       if (vertex === endNode) {
-        return path; 
+        return path;
       }
-  
+
       if (!visited.has(vertex)) {
-        visited.add(vertex); 
-  
+        visited.add(vertex);
+
         for (const neighbor of this.adjacencyList[vertex]) {
-          const newPath = [...path, neighbor]; 
-          queue.push(newPath); 
+          const newPath = [...path, neighbor];
+          queue.push(newPath);
         }
       }
     }
-  
+
     return [];
   }
-  
-  
+
+  detectCycle() {
+    const visited = new Set();
+
+    const stack = [];
+
+    for (let vertex in this.adjacencyList) {
+      if (!visited.has(vertex)) {
+        stack.push([vertex, null]);
+
+        while (stack.length > 0) {
+          const [currentNode, parent] = stack.pop();
+
+          if (!visited.has(currentNode)) {
+            visited.add(currentNode);
+
+            for (const neighbor of this.adjacencyList[currentNode]) {
+              if (visited.has(neighbor) && neighbor !== parent) {
+                return true;
+              }
+
+              stack.push([neighbor, currentNode]);
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
 }
 
 const graph = new Graph();
@@ -155,7 +179,7 @@ graph.addEdge("A", "C");
 graph.addEdge("B", "D");
 
 console.log("Graph structure:");
-graph.display()
+graph.display();
 
 console.log(graph.dfs("A"));
 console.log(graph.bfs("A"));

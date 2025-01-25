@@ -43,25 +43,45 @@ class Trie {
     return true;
   }
 
-  autoComplete(word) {
+  autoComplete(prefix) {
     let curr = this.root;
     let result = [];
-    for (let char of word) {
-      if (!curr.children[char]) {
+    for (let char of prefix) {
+      if (!(char in curr.children)) {
         return result;
       }
       curr = curr.children[char];
     }
-    function getwords(curr, word) {
-      if (curr.isEndOfWord) {
-        result.push(word);
-      }
-      for (let char in curr.children) {
-        getwords(curr.children[char], word + char);
-      }
-    }
 
-    getwords(curr);
+    this.getWords(curr, prefix, result);
     return result;
   }
+
+  getWords(curr, word, result) {
+    if (curr.isEndOfWord) {
+      result.push(word);
+    }
+
+    for (let char in curr.children) {
+      this.getWords(curr.children[char], word + char, result);
+    }
+  }
 }
+const trie = new Trie();
+
+trie.insert("apple");
+trie.insert("app");
+trie.insert("bat");
+trie.insert("ball");
+
+console.log(trie.search("apple"));
+console.log(trie.search("app"));
+console.log(trie.search("bat"));
+console.log(trie.search("ball"));
+console.log(trie.search("bats"));
+
+console.log(trie.startsWithPrefix("app"));
+console.log(trie.startsWithPrefix("ba"));
+console.log(trie.startsWithPrefix("xyz"));
+
+console.log(trie.autoComplete("ba"));

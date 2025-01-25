@@ -9,54 +9,66 @@ class LinkedListStack {
   constructor() {
     this.head = null;
     this.tail = null;
+    this.size = 0;
   }
 
   isEmpty() {
-    return this.head === null;
+    return this.size === 0;
   }
   push(value) {
     const newnode = new Node(value);
-
     if (this.isEmpty()) {
       this.head = newnode;
       this.tail = newnode;
     } else {
-      newnode.next = this.head;
-      this.head = newnode;
+      this.tail.next = newnode;
+      this.tail = newnode;
     }
+    this.size++;
   }
 
   pop() {
     if (this.isEmpty()) {
-      console.log("The list is empty");
-      return;
+      console.log("The list is empty, nothing to remove");
+      return null;
     }
-    const poppednode = this.head;
-    this.head = this.head.next;
 
-    if (this.head === null) {
+    let poppedValue;
+    if (this.size === 1) {
+      poppedValue = this.head.value;
+      this.head = null;
       this.tail = null;
+    } else {
+      let current = this.head;
+      while (current !== null && current.next !== this.tail) {
+        current = current.next;
+      }
+      poppedValue = this.tail.value;
+      current.next = null;
+      this.tail = current;
     }
-    return poppednode.value;
+
+    this.size--;
+    return poppedValue;
   }
+
   peek() {
     if (this.isEmpty()) {
       console.log("The list is empty");
-      return
+      return;
     }
     return this.head.value;
   }
 
-  print(){
-    let current = this.head
-    let result = []
+  print() {
+    let current = this.head;
+    let result = [];
 
-    while(current!==null){
-
-       result.push(current.value)
-       current = current.next
+    while (current !== null) {
+      result.push(current.value);
+      current = current.next;
     }
-    return result
+    return result;
   }
 }
 
@@ -67,6 +79,6 @@ stack.push(10);
 stack.push(30);
 console.log(stack.print());
 
-stack.pop()
- 
+stack.pop();
+
 console.log(stack.print());

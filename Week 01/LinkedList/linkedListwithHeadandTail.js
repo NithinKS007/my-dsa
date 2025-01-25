@@ -43,15 +43,18 @@ class LinkedList {
   }
 
   print() {
+    let current = this.head;
+    let result = [];
     if (this.isEmpty()) {
       console.log("The list is empty");
     } else {
-      let current = this.head;
       while (current !== null) {
-        console.log("values in the linked list are :", current.value);
+        result.push(current.value);
         current = current.next;
       }
     }
+
+    return result;
   }
 
   findMiddle() {
@@ -67,12 +70,6 @@ class LinkedList {
     let fastPointer = this.head;
 
     while (fastPointer !== null && fastPointer.next !== null) {
-      console.log(
-        "slowPointer at:",
-        slowPointer.value,
-        "fastPointer at:",
-        fastPointer.value
-      );
       slowPointer = slowPointer.next;
       fastPointer = fastPointer.next.next;
     }
@@ -96,6 +93,32 @@ class LinkedList {
     prev.next = slowPointer.next;
     this.size--;
   }
+  removeEvenNumbers() {
+    if (this.isEmpty()) {
+      console.log("The list is empty");
+      return;
+    }
+
+    // Remove even numbers from the beginning of the list
+    while (this.head && this.head.value % 2 === 0) {
+      this.head = this.head.next;
+      if (!this.head) this.tail = null;
+      this.size--;
+    }
+
+    // Remove even numbers from the rest of the list
+    let current = this.head;
+    while (current!==null && current.next!==null) {
+      if (current.next.value % 2 === 0) {
+        current.next = current.next.next;
+        if (current.next===null) this.tail = current;
+        this.size--;
+      } else {
+        current = current.next;
+      }
+    }
+  }
+
   countNodes() {
     if (this.isEmpty()) {
       console.log("List is empty", 0);
@@ -190,10 +213,7 @@ class LinkedList {
         const newNode = new Node(value);
         newNode.next = curr.next;
         curr.next = newNode;
-        if (curr.next === null) {
-          this.tail = newNode;
-        }
-
+        if (curr.next === null) this.tail = newNode;
         this.size++;
         return;
       }
@@ -234,28 +254,20 @@ class LinkedList {
     // Special case: head contains the value
     if (this.head.value === value) {
       this.head = this.head.next;
-      if (this.head === null) {
-        this.tail = null; // If the list becomes empty, set tail to null
-      }
+      if (this.head === null) this.tail = null;
       this.size--;
-      console.log("Value deleted:", value);
       return;
     }
     let current = this.head;
     while (current !== null && current.next !== null) {
       if (current.next.value === value) {
         current.next = current.next.next;
-        if (current.next === null) {
-          this.tail = current; // If we deleted the last node, update tail
-        }
+        if (current.next === null) this.tail = current;
         this.size--;
-        console.log("Value deleted:", value);
         return;
-      }
-      current = current.next;
+      } 
+        current = current.next;
     }
-
-    console.log("Value not found in the list.");
   }
   reverse() {
     if (this.isEmpty()) {
@@ -306,9 +318,7 @@ class LinkedList {
       return;
     }
     this.head = this.head.next;
-    if (this.head === null) {
-      this.tail = null;
-    }
+    if (this.head === null) this.tail = null;
     this.size--;
     console.log("Removed from front.");
   }
@@ -317,6 +327,7 @@ class LinkedList {
       console.log("List is empty");
       return;
     }
+
     if (this.size === 1) {
       this.head = null;
       this.tail = null;
@@ -367,9 +378,7 @@ class LinkedList {
 
     if (index === 0) {
       this.head = this.head.next;
-      if (this.head === null) {
-        this.tail = null;
-      }
+      if (this.head === null) this.tail = null;
       this.size--;
       console.log("Removed from index 0");
       return;
@@ -384,9 +393,7 @@ class LinkedList {
     }
 
     current.next = current.next.next;
-    if (current.next === null) {
-      this.tail = current;
-    }
+    if (current.next === null) this.tail = current;
     this.size--;
     console.log(`Removed from index ${index}`);
   }
@@ -402,7 +409,7 @@ class LinkedList {
     while (fastPointer !== null && fastPointer.next !== null) {
       slowPointer = slowPointer.next;
       fastPointer = fastPointer.next.next;
-
+ 
       if (slowPointer === fastPointer) {
         console.log("Cycle detected!");
         return true;
@@ -411,4 +418,63 @@ class LinkedList {
     console.log("No cycle detected.");
     return false;
   }
+  findNthNod(n) {
+    if (n <= 0) {
+      console.log("out of bounds");
+      return;
+    }
+    let current = this.head;
+    let count = 1;
+    while (current !== null) {
+      if (count === n) {
+        return current.value;
+      }
+      current = current.next;
+      count++;
+    }
+
+    return -1;
+  }
+
+  removeNthFromEndSimpleMethod(n) {
+    if (n <= 0 || n > this.size) {
+      return "Invalid input";
+    }
+    if (n === this.size) {
+      const removedValue = this.head.value;
+      this.head = this.head.next;
+      if (this.head === null) this.tail = null;
+      this.size--;
+      return `Removed node with value ${removedValue} at index ${this.size}`;
+    }
+
+    let indexToRemove = this.size - n;
+    let current = this.head;
+    let count = 0;
+    while (count < indexToRemove - 1) {
+      current = current.next;
+      count++;
+    }
+
+    const removedValue = current.next.value;
+    current.next = current.next.next;
+
+    if (current.next === null) this.tail = current;
+
+    this.size--;
+    return `Removed node with value ${removedValue} at index ${indexToRemove}`;
+  }
+  removeNthFromEndWithSlowFast() {}
 }
+
+const list = new LinkedList();
+
+list.append(10);
+list.append(20);
+list.append(9);
+list.append(890);
+list.append(80);
+
+console.log(list.print());
+console.log(list.findNthNod(3));
+console.log(list.removeNthFromEndSimpleMethod(5));
