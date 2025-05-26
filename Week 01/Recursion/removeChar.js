@@ -14,3 +14,4 @@ const removeChar = (str, charToRemove, index = 0) => {
   const result = removeChar(str, 'o');
   console.log(result);
   
+  

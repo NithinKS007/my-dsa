@@ -1,3 +1,14 @@
+// Buckets:
+// Index 0: [ ]  <-- Empty bucket
+// Index 1: [ ]  <-- Empty bucket
+// Index 2: [ ]  <-- Empty bucket
+// Index 3: [ ['apple', 10], ['banana', 20] ]  <-- Collision handling: 
+//                                                 both 'apple' and 'banana' 
+//                                                 are stored in the same bucket
+// Index 4: [ ['orange', 15] ]  <-- No collision for 'orange', so it goes to index 4
+
+
+
 class HashTable {
   constructor(capacity) {
     this.buckets = new Array(capacity);

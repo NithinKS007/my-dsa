@@ -41,7 +41,7 @@ class BinarySearchTree {
     }
   }
 
-  search(root = this.root, value) {
+  search(root, value) {
     if (!root) {
       return false;
     }
@@ -171,10 +171,11 @@ class BinarySearchTree {
     if (root.value <= minValue || root.value >= maxValue) {
       return false;
     }
-    return (
-      this.isValidBst(root.left, minValue, root.value) &&
-      this.isValidBst(root.right, root.value, maxValue)
-    );
+
+    const leftIsValid = this.isValidBst(root.left, minValue, root.value);
+    const rightIsValid = this.isValidBst(root.right, root.value, maxValue);
+
+    return leftIsValid && rightIsValid;
   }
   isValidBstManual(root) {
     if (!root) {
@@ -231,7 +232,7 @@ class BinarySearchTree {
     return closest;
   }
 
-  // or maximum depth
+  //recursive Approach = maximum depth or height
   height(node = this.root) {
     if (node === null) {
       return -1;
@@ -242,16 +243,20 @@ class BinarySearchTree {
 
     return Math.max(leftHeight, rightHeight) + 1;
   }
-  height(node) {
+
+  //iterative Approach = maximum depth or height
+  height(node = this.root) {
     if (node === null) {
-      return -1;
+      return -1; // Base case: empty tree
     }
-    let stack = [{ node: node, depth: 0 }];
+    const stack = [{ node: node, depth: 0 }];
     let maxDepth = -1;
     while (stack.length > 0) {
-      let { node, depth } = stack.pop();
+      // Pop the current node and its depth from the stack
+      const { node, depth } = stack.pop();
 
       if (node !== null) {
+        // Update the max depth
         maxDepth = Math.max(maxDepth, depth);
         if (node.right) {
           stack.push({ node: node.right, depth: depth + 1 });
@@ -288,10 +293,9 @@ class BinarySearchTree {
         queue2.push(node2.right);
       } else if (node1.right || node2.right) {
         return false;
-       
       }
     }
-    return true;
+    return queue1.length === 0 && queue2.length === 0;
   }
 
   invertBinarySearchTree() {
@@ -439,6 +443,68 @@ class BinarySearchTree {
 
     return current.value;
   }
+  hasPathSum(node, targetSum) {
+    // Base case: if the node is null, there's no path
+    if (node === null) {
+      return false;
+    }
+
+    // If we've reached a leaf node, check if the target sum is zero
+    if (node.left === null && node.right === null) {
+      return targetSum === node.value;
+    }
+
+    // Recursively check left and right subtrees, reducing the target sum
+    const newTargetSum = targetSum - node.value;
+    return (
+      this.hasPathSum(node.left, newTargetSum) ||
+      this.hasPathSum(node.right, newTargetSum)
+    );
+  }
+
+  // Public method to check if the tree has a path sum
+  checkPathSum(targetSum) {
+    return this.hasPathSum(this.root, targetSum);
+  }
+
+  checkPathSumIterative(targetSum) {
+    if (!this.root) {
+      return false;
+    }
+
+    // Stack stores [node, currentSum] pairs
+    const stack = [[this.root, targetSum - this.root.value]];
+
+    while (stack.length > 0) {
+      const [node, currSum] = stack.pop();
+
+      // If at a leaf node, check if the remaining sum is zero
+      if (node.left === null && node.right === null && currSum === 0) {
+        return true;
+      }
+
+      // Push right child if it exists
+      if (node.right !== null) {
+        stack.push([node.right, currSum - node.right.value]);
+      }
+
+      // Push left child if it exists
+      if (node.left !== null) {
+        stack.push([node.left, currSum - node.left.value]);
+      }
+    }
+
+    return false;
+  }
+  countNodes(node = this.root) {
+    if (node === null) {
+      return 0;
+    } else {
+      const leftCount = this.countNodes(node.left);
+      const rightCount = this.countNodes(node.right);
+      return 1 + leftCount + rightCount;
+    }
+  }
 }
 
 const bst = new BinarySearchTree();
@@ -448,7 +514,7 @@ bst.insert(5);
 bst.insert(15);
 bst.insert(15);
 // console.log(bst.search(10)); // true
-// console.log(bst.search(7)); // false
+// console.log(bst.search(bst.root,7)); // false
 // console.log(bst.inOrder()); // [5, 10, 15]
 // console.log(bst.height()); // 1
 // console.log(bst.min(bst.root)); // 5
@@ -457,5 +523,5 @@ bst.insert(15);
 // bst.delete(10);
 console.log(bst.inOrder()); // [5, 15]
 
-// console.log(bst.secLargestBFS());
-// console.log(bst.countLeafNodes());
+console.log("second largest: ", bst.secLargestBFS());
+console.log("leaf nodes : ", bst.countLeafNodes());

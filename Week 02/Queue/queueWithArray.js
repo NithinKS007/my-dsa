@@ -35,3 +35,5 @@ queue.enqueue(50);
 queue.print();
 queue.dequeue(4);
 queue.print();
+
+module.exports = { queue };

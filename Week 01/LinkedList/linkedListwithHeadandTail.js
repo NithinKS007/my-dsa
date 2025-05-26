@@ -57,6 +57,60 @@ class LinkedList {
     return result;
   }
 
+  find(value) {
+    let current = this.head;
+
+    while (current !== null) {
+      if (value === current.value) {
+        return true;
+      }
+      current = current.next;
+    }
+    return false;
+  }
+
+  deleteFirst() {
+    if (this.isEmpty()) {
+      return "Nothing to remove, the list is empty";
+    }
+
+    if (this.size === 1) {
+      this.head = null;
+      this.tail = null;
+    } else {
+      this.head = this.head.next;
+    }
+    this.size--;
+  }
+
+  deleteLast() {
+    if (this.isEmpty()) {
+      return "Nothing to remove the list is empty";
+    }
+    let current = this.head;
+    let prev = null;
+    if (this.size === 1) {
+      this.tail = null;
+      this.head = null;
+    } else {
+      //current !== null ensures that you're not working with a null node
+      // (i.e., you haven't reached the end of the list).
+
+      // current.next !== null ensures that the current node is not the last node,
+      // meaning current.next is the last node.
+      // This condition will indeed stop the loop when current is the second-to-last node
+      // (because current.next will be null when you reach the last node).
+
+      while (current !== null && current.next !== null) {
+        prev = current;
+        current = current.next;
+      }
+      prev.next = null;
+      this.tail = prev;
+    }
+    this.size--;
+  }
+
   findMiddle() {
     if (this.isEmpty()) {
       console.log("list is empty");
@@ -107,11 +161,26 @@ class LinkedList {
     }
 
     // Remove even numbers from the rest of the list
+
     let current = this.head;
-    while (current!==null && current.next!==null) {
+    // let current = this.head;: Start with the current
+    // pointer at the head of the list.
+
+    // current !== null && current.next !== null:
+    // We need to check that current is not null (we haven’t reached the end of the list)
+    // and that current.next exists (because we’re checking the next node for evenness).
+
+    // if (current.next.value % 2 === 0): This checks if
+    // the next node of the current node contains an even value.
+
+    // current.next = current.next.next;: If the next node is even,
+    // we skip over it by setting current.next to point to current.next.next
+    // (i.e., the node after the even node). This effectively removes the even node from the list.
+
+    while (current !== null && current.next !== null) {
       if (current.next.value % 2 === 0) {
         current.next = current.next.next;
-        if (current.next===null) this.tail = current;
+        if (current.next === null) this.tail = current;
         this.size--;
       } else {
         current = current.next;
@@ -143,6 +212,25 @@ class LinkedList {
         } else {
           runner = runner.next;
         }
+      }
+      current = current.next;
+    }
+  }
+
+  removeDuplicateswithSet() {
+    if (!this.head) {
+      return;
+    }
+    let current = this.head;
+    let previous = null;
+    let seen = new Set();
+
+    while (current != null) {
+      if (seen.has(current.data)) {
+        previous.next = current.next;
+      } else {
+        previous = current;
+        seen.add(current.data);
       }
       current = current.next;
     }
@@ -206,6 +294,24 @@ class LinkedList {
 
     return { largest, secondLargest };
   }
+  
+  getNodeAtIndex(index) {
+    if (index < 1 || index > this.size) {
+      throw new Error("Invalid index");
+    }
+
+    let current = this.head;
+    let i = 1;
+    while (current) {
+      if (index == i) {
+        console.log("data =>", current.data);
+        return;
+      }
+      i++;
+      current = current.next;
+    }
+  }
+
   insertAfter(value, afterValue) {
     let curr = this.head;
     while (curr !== null) {
@@ -265,8 +371,8 @@ class LinkedList {
         if (current.next === null) this.tail = current;
         this.size--;
         return;
-      } 
-        current = current.next;
+      }
+      current = current.next;
     }
   }
   reverse() {
@@ -357,16 +463,21 @@ class LinkedList {
     }
 
     let current = this.head;
-    let count = 0;
-    while (count < index - 1) {
+    let previous = null;
+    let currentIndex = 0;
+
+    while (currentIndex < index) {
+      previous = current;
       current = current.next;
-      count++;
+      currentIndex++;
     }
 
     const newNode = new Node(value);
-    newNode.next = current.next;
-    current.next = newNode;
-
+    previous.next = newNode;
+    newNode.next = current;
+    if (index === this.size) {
+      this.tail = newNode;
+    }
     this.size++;
     console.log(`Inserted ${value} at index ${index}`);
   }
@@ -409,7 +520,7 @@ class LinkedList {
     while (fastPointer !== null && fastPointer.next !== null) {
       slowPointer = slowPointer.next;
       fastPointer = fastPointer.next.next;
- 
+
       if (slowPointer === fastPointer) {
         console.log("Cycle detected!");
         return true;

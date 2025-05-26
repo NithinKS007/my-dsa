@@ -14,23 +14,47 @@ class BinaryTree {
   isEmpty() {
     return this.root === null;
   }
-  insert(value) {
+  insertNodeIterative(value) {
     const newNode = new Node(value);
+    if (!this.root) {
+      return (this.root = newNode);
+    }
+    const queue = [this.root];
 
-    if (this.isEmpty()) {
-      this.root = newNode;
-    } else {
-      this.insertNode(this.root, newNode);
+    while (queue.length > 0) {
+      let current = queue.shift();
+
+      if (current.left === null) {
+        current.left = newNode;
+        return;
+      } else {
+        queue.push(current.left);
+      }
+
+      if (current.right === null) {
+        current.right = newNode;
+        return;
+      } else {
+        queue.push(current.right);
+      }
     }
   }
-  insertNode(root, newNode) {
-    if (root.left === null) {
-      root.left = newNode;
-    } else if (root.right === null) {
-      root.right = newNode;
-    } else {
-      this.insertNode(root.left, newNode);
+  recursiveInsert(node, value) {
+    if (!node) {
+      return new Node(value);
     }
+    if (!node.left) {
+      node.left = this.recursiveInsert(node.left, value);
+    } else if (!node.right) {
+      node.right = this.recursiveInsert(node.right, value);
+    } else {
+      node.left = this.recursiveInsert(node.left, value);
+    }
+    return node;
+  }
+
+  insert(value) {
+    this.root = this.recursiveInsert(this.root, value);
   }
   bfs() {
     const result = [];
@@ -79,16 +103,6 @@ class BinaryTree {
     }
     return result;
   }
-  height(node = this.root) {
-    if (node === null) {
-      return -1;
-    }
-
-    const leftHeight = this.height(node.left);
-    const rightHeight = this.height(node.right);
-
-    return Math.max(leftHeight, rightHeight) + 1;
-  }
 
   search(value, node = this.root) {
     if (node === null) {
@@ -101,16 +115,9 @@ class BinaryTree {
     return this.search(value, node.left) || this.search(value, node.right);
   }
 
-  countNodes(node = this.root) {
-    if (node === null) {
-      return 0; 
-    } else {
-      const leftCount = this.countNodes(node.left);
-      const rightCount = this.countNodes(node.right);
-      return 1 + leftCount + rightCount; 
-    }
-  }
-  
+  // Given an integer array nums where the elements are sorted in ascending order,
+  // convert it to a height-balanced binary search tree.
+
 }
 const tree = new BinaryTree();
 tree.insert(1);
@@ -120,9 +127,9 @@ tree.insert(4);
 tree.insert(5);
 tree.insert(6);
 
-console.log(tree.bfs())
-console.log(tree.inOrder())
+console.log(tree.bfs());
+console.log(tree.inOrder());
 console.log(tree.preOrder());
-console.log(tree.postOrder()); 
-console.log(tree.height()); 
-console.log(tree.countNodes()); 
+console.log(tree.postOrder());
+console.log(tree.height());
+console.log(tree.countNodes());
