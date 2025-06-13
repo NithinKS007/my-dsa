@@ -529,6 +529,7 @@ class LinkedList {
     console.log("No cycle detected.");
     return false;
   }
+  
   findNthNod(n) {
     if (n <= 0) {
       console.log("out of bounds");
@@ -576,6 +577,10 @@ class LinkedList {
     return `Removed node with value ${removedValue} at index ${indexToRemove}`;
   }
   removeNthFromEndWithSlowFast() {}
+
+  //add two numbers as in a linked list
+  //check the linked listis pailndrome or not
+  
 }
 
 const list = new LinkedList();

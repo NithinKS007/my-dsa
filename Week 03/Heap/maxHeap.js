@@ -68,6 +68,13 @@ class MaxHeap {
       console.log(this.heap[i]);
     }
   }
+  getRightChild(heap, i) {
+    const rightChildIndex = 2 * i + 2;
+    if (rightChildIndex < heap.length) {
+      return heap[rightChildIndex];
+    }
+    return null;
+  }
 }
 
 const maxHeap = new MaxHeap();
